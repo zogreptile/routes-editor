@@ -5,11 +5,12 @@ import {
   Placemark,
 } from 'react-yandex-maps';
 import SearchBar from './SearchBar';
+import PlacesList from './PlacesList';
 import '../App.css';
 
 const mapState = {
   center: [55.75, 37.57],
-  zoom: 9,
+  zoom: 14,
 };
 
 const mapConfig = {
@@ -39,10 +40,14 @@ class App extends React.Component {
     ymaps.geocode(searchValue)
       .then(
         result => {
-          const newPlaceCoords = result.geoObjects.get(0).geometry.getCoordinates();
+          const newPlace = {
+            caption: result.geoObjects.get(0).properties.get('text'),
+            coords: result.geoObjects.get(0).geometry.getCoordinates(),
+          };
+
           this.setState({
             searchValue: '',
-            placemarks: [...placemarks, newPlaceCoords],
+            placemarks: [...placemarks, newPlace],
           })
         },
         err => {
@@ -58,11 +63,11 @@ class App extends React.Component {
       return null;
     }
 
-    return placemarks.map((coords, ind) => <Placemark key={ind} geometry={coords} />);
+    return placemarks.map((place, ind) => <Placemark key={ind} geometry={place.coords} />);
   }
 
   render() {
-    const { searchValue } = this.state;
+    const { searchValue, placemarks } = this.state;
     return (
       <YMaps
         query={mapConfig}
@@ -71,6 +76,9 @@ class App extends React.Component {
           value={searchValue}
           onChange={this.handleSearchChange}
           onSubmit={this.handleSearchSubmit}
+        />
+        <PlacesList
+          items={placemarks}
         />
         <Map
           defaultState={mapState}

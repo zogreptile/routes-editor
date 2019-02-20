@@ -1,8 +1,9 @@
 .search-bar {
   display: flex;
   padding: 10px;
-  background-color: #fff;
+  width: 380px;
   border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.75);
   box-shadow: 0px 2px 8px #bfbfbf;
   position: fixed;
   top: 20px;
@@ -14,6 +15,52 @@
   flex: 1 0;
   margin-right: 5px;
   padding: 6px;
-  border: 1px solid black;
-  border-radius: 2px;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+}
+
+.search-bar__input:active,
+.search-bar__input:focus {
+  outline: none;
+  border-color: #3589eb;
+}
+
+.search-bar__input::-webkit-input-placeholder {
+  color: #000;
+}
+.search-bar__input:-ms-input-placeholder {
+  color: #000;
+}
+.search-bar__input::-moz-placeholder {
+  opacity: 1;
+  color: #000;
+}
+.search-bar__input:-moz-placeholder {
+  opacity: 1;
+  color: #000;
+}
+
+.places {
+  margin: 0;
+  padding: 10px;
+  width: 380px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 0px 2px 8px #bfbfbf;
+  position: fixed;
+  top: 92px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.places__item {
+  margin: 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #000;
+  list-style: none;
+}
+
+.places__item:last-child {
+  border-bottom: none;
 }
