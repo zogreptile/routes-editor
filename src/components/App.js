@@ -23,9 +23,14 @@ class App extends React.Component {
     searchValue: '',
     placemarks: [],
     ymaps: null,
+    map: null,
   }
 
-  setYmaps = (ymaps) => {
+  setMapRef = (map) => {
+    this.setState({ map });
+  }
+
+  setYmapsRef = (ymaps) => {
     this.setState({ ymaps });
   }
 
@@ -40,10 +45,13 @@ class App extends React.Component {
     ymaps.geocode(searchValue)
       .then(
         result => {
+          const { map } = this.state;
           const newPlace = {
             caption: result.geoObjects.get(0).properties.get('text'),
             coords: result.geoObjects.get(0).geometry.getCoordinates(),
           };
+
+          map.setCenter(newPlace.coords);
 
           this.setState({
             searchValue: '',
@@ -84,9 +92,10 @@ class App extends React.Component {
           defaultState={mapState}
           width='100%'
           height='100vh'
-          onLoad={ymaps => this.setYmaps(ymaps)}
+          onLoad={this.setYmapsRef}
+          instanceRef={this.setMapRef}
         >
-        {this.renderPlacemarks()}
+          {this.renderPlacemarks()}
         </Map>
       </YMaps>
     );

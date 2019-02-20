@@ -10,13 +10,10 @@ class SearchBar extends React.Component {
         <input
           className='search-bar__input'
           type='text'
-          placeholder='Enter address'
+          placeholder='Введите адрес'
           value={this.props.value}
           onChange={this.props.onChange}
         />
-        <button type='submit'>
-          Add
-        </button>
       </form>
     );
   }
