@@ -20,8 +20,12 @@ const mapConfig = {
 class App extends React.Component {
   state = {
     searchValue: '',
-    coords: null,
+    placemarks: [],
     ymaps: null,
+  }
+
+  setYmaps = (ymaps) => {
+    this.setState({ ymaps });
   }
 
   handleSearchChange = (e) => {
@@ -30,19 +34,31 @@ class App extends React.Component {
 
   handleSearchSubmit = (e) => {
     e.preventDefault();
-    const { ymaps, searchValue } = this.state;
+    const { ymaps, searchValue, placemarks } = this.state;
 
     ymaps.geocode(searchValue)
-      .then(result => {
-        this.setState({
-          searchValue: '',
-          coords: result.geoObjects.get(0).geometry.getCoordinates() 
-        })
-      });
+      .then(
+        result => {
+          const newPlaceCoords = result.geoObjects.get(0).geometry.getCoordinates();
+          this.setState({
+            searchValue: '',
+            placemarks: [...placemarks, newPlaceCoords],
+          })
+        },
+        err => {
+          console.log('Geocode error: ', err);
+        }
+      );
   }
 
-  getYmaps = (ymaps) => {
-    this.setState({ ymaps });
+  renderPlacemarks = () => {
+    const { placemarks } = this.state;
+
+    if (!placemarks.length) {
+      return null;
+    }
+
+    return placemarks.map((coords, ind) => <Placemark key={ind} geometry={coords} />);
   }
 
   render() {
@@ -60,11 +76,9 @@ class App extends React.Component {
           defaultState={mapState}
           width='100%'
           height='100vh'
-          onLoad={ymaps => this.getYmaps(ymaps)}
+          onLoad={ymaps => this.setYmaps(ymaps)}
         >
-        {
-          this.state.coords && <Placemark geometry={this.state.coords} />
-        }
+        {this.renderPlacemarks()}
         </Map>
       </YMaps>
     );
