@@ -16,13 +16,11 @@ class Route extends React.Component {
     route && map.geoObjects.add(route);
 
     return points.map((point, ind) => {
-      const newCoords = [point.coords[0] + 0.0002, point.coords[1] - 0.0002];
       return (
         <Placemark
           key={ind}
-          geometry={newCoords}
+          geometry={point.coords}
           options={{ iconColor: '#ff0000' }}
-          // geometry={point.coords}
         />
       )
     });

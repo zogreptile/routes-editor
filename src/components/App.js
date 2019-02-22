@@ -15,7 +15,7 @@ const mapState = {
 };
 
 const mapConfig = {
-  load: 'geocode,route',
+  load: 'geocode,Polyline',
   apikey: 'eeb0c9a9-72eb-497b-a566-b040ed89c6c1',
 };
 
@@ -57,9 +57,7 @@ class App extends React.Component {
       id: 'id_' + nanoid(),
     };
     const newPoints = [...points, newPoint];
-    const newRoute = newPoints.length > 1 ?
-      await ymaps.route(newPoints.map(point => point.coords)) :
-      null;
+    const newRoute = new ymaps.Polyline(newPoints.map(point => point.coords));
 
     map.setCenter(newPoint.coords);
     route && map.geoObjects.remove(route);
@@ -71,7 +69,7 @@ class App extends React.Component {
     });
   }
 
-  handlePointRemove = async (id) => {
+  handlePointRemove = (id) => {
     const {
       points,
       map,
@@ -81,7 +79,7 @@ class App extends React.Component {
 
     const newPoints = points.filter(point => point.id !== id);
     const newRoute = newPoints.length > 1 ?
-      await ymaps.route(newPoints.map(point => point.coords)) :
+      new ymaps.Polyline(newPoints.map(point => point.coords)) :
       null;
 
     route && map.geoObjects.remove(route);
