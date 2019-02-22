@@ -2,24 +2,30 @@ import React from 'react';
 
 class PlacesList extends React.Component {
   static defaultProps = {
-    items: [],
+    points: [],
   }
 
   render() {
-    const { items } = this.props;
+    const { points, onRemove } = this.props;
 
-    if (!items.length) {
+    if (!points.length) {
       return null;
     }
 
     return (
       <ul className='places'>
-        {items.map((el, ind) =>
+        {points.map((el, ind) =>
           <li
             className='places__item'
             key={ind}
           >
             {el.caption}
+            <button
+              className='places__item-remove'
+              onClick={() => onRemove(el.id)}
+            >
+              ✕
+            </button>
           </li>
         )}
       </ul>
