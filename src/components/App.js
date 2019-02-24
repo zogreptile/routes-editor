@@ -47,7 +47,6 @@ class App extends React.Component {
       searchValue,
       points,
       map,
-      route,
     } = this.state;
 
     const geocodeResult = await ymaps.geocode(searchValue);
@@ -56,16 +55,12 @@ class App extends React.Component {
       coords: geocodeResult.geoObjects.get(0).geometry.getCoordinates(),
       id: 'id_' + nanoid(),
     };
-    const newPoints = [...points, newPoint];
-    const newRoute = new ymaps.Polyline(newPoints.map(point => point.coords));
 
     map.setCenter(newPoint.coords);
-    route && map.geoObjects.remove(route);
 
     this.setState({
       searchValue: '',
       points: [...points, newPoint],
-      route: newRoute,
     });
   }
 
@@ -73,21 +68,14 @@ class App extends React.Component {
     const {
       points,
       map,
-      ymaps,
-      route,
     } = this.state;
 
     const newPoints = points.filter(point => point.id !== id);
-    const newRoute = newPoints.length > 1 ?
-      new ymaps.Polyline(newPoints.map(point => point.coords)) :
-      null;
 
-    route && map.geoObjects.remove(route);
     newPoints.length && map.setCenter(newPoints[0].coords);
 
     this.setState({
       points: newPoints,
-      route: newRoute,
     })
   }
 
@@ -95,8 +83,6 @@ class App extends React.Component {
     const {
       searchValue,
       points,
-      map,
-      route,
     } = this.state;
 
     return (
@@ -121,8 +107,6 @@ class App extends React.Component {
         >
           <Route
             points={points}
-            map={map}
-            route={route}
           />
         </Map>
       </YMaps>
