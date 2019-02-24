@@ -15,7 +15,7 @@ const mapState = {
 };
 
 const mapConfig = {
-  load: 'geocode,Polyline',
+  load: 'geocode',
   apikey: 'eeb0c9a9-72eb-497b-a566-b040ed89c6c1',
 };
 
@@ -47,6 +47,10 @@ class App extends React.Component {
       points,
       map,
     } = this.state;
+
+    if (!searchValue) {
+      return null;
+    }
 
     const geocodeResult = await ymaps.geocode(searchValue);
     const newPoint = {
@@ -80,6 +84,30 @@ class App extends React.Component {
     })
   }
 
+  handlePointChangeLocation = (id, coords) => {
+    const {
+      points,
+      map,
+    } = this.state;
+
+    const updatedPoints = points.reduce((acc, el) => {
+      if (el.id === id) {
+        const updatedPoint = {
+          ...el,
+          coords,
+        };
+        map.setCenter(updatedPoint.coords);
+        return [...acc, updatedPoint];
+      }
+
+      return [...acc, el];
+    }, []);
+
+    this.setState({
+      points: updatedPoints,
+    });
+  }
+
   render() {
     const {
       searchValue,
@@ -108,6 +136,7 @@ class App extends React.Component {
         >
           <Route
             points={points}
+            onChangeLocation={this.handlePointChangeLocation}
           />
         </Map>
       </YMaps>

@@ -6,7 +6,10 @@ import {
 
 class Route extends React.Component {
   render() {
-    const { points } = this.props;
+    const {
+      points,
+      onChangeLocation,
+    } = this.props;
 
     if (!points.length) {
       return null;
@@ -26,8 +29,12 @@ class Route extends React.Component {
                 iconContent: index + 1,
                 balloonContent: point.balloonContent,
               }}
-              options={{ iconColor: '#ff0000' }}
+              options={{
+                draggable: true,
+                iconColor: '#ff0000',
+              }}
               modules={['geoObject.addon.balloon']}
+              onDragEnd={e => onChangeLocation(point.id, e.originalEvent.target.geometry.getCoordinates())}
             />
           )
         }
