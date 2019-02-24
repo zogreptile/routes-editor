@@ -25,7 +25,6 @@ class App extends React.Component {
     points: [],
     ymaps: null,
     map: null,
-    route: null,
   }
 
   setMapRef = (map) => {
@@ -51,9 +50,10 @@ class App extends React.Component {
 
     const geocodeResult = await ymaps.geocode(searchValue);
     const newPoint = {
-      caption: geocodeResult.geoObjects.get(0).properties.get('text'),
-      coords: geocodeResult.geoObjects.get(0).geometry.getCoordinates(),
       id: 'id_' + nanoid(),
+      coords: geocodeResult.geoObjects.get(0).geometry.getCoordinates(),
+      caption: geocodeResult.geoObjects.get(0).properties.get('text'),
+      balloonContent: geocodeResult.geoObjects.get(0).properties.get('balloonContent'),
     };
 
     map.setCenter(newPoint.coords);
@@ -72,7 +72,8 @@ class App extends React.Component {
 
     const newPoints = points.filter(point => point.id !== id);
 
-    newPoints.length && map.setCenter(newPoints[0].coords);
+    //TODO: show all points
+    newPoints.length && map.setCenter(newPoints[newPoints.length - 1].coords);
 
     this.setState({
       points: newPoints,

@@ -16,21 +16,20 @@ class Route extends React.Component {
 
     return (
       <>
+        <Polyline geometry={routeCoords} />
         {
-          points.length > 1 ?
-            <Polyline geometry={routeCoords} /> :
-            null
-        }
-        {
-          points.map((point, ind) => {
-            return (
-              <Placemark
-                key={ind}
-                geometry={point.coords}
-                options={{ iconColor: '#ff0000' }}
-              />
-            )
-          })
+          points.map((point, index) =>
+            <Placemark
+              key={point.id}
+              geometry={point.coords}
+              properties={{
+                iconContent: index + 1,
+                balloonContent: point.balloonContent,
+              }}
+              options={{ iconColor: '#ff0000' }}
+              modules={['geoObject.addon.balloon']}
+            />
+          )
         }
       </>
     );

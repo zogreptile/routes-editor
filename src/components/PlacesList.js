@@ -14,10 +14,10 @@ class PlacesList extends React.Component {
 
     return (
       <ul className='places'>
-        {points.map((el, ind) =>
+        {points.map((el) =>
           <li
             className='places__item'
-            key={ind}
+            key={el.id}
           >
             {el.caption}
             <button
