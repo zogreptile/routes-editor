@@ -34,7 +34,10 @@ class Route extends React.Component {
                 iconColor: '#ff0000',
               }}
               modules={['geoObject.addon.balloon']}
-              onDragEnd={e => onChangeLocation(point.id, e.originalEvent.target.geometry.getCoordinates())}
+              onDragEnd={(e) => {
+                const newCoords = e.originalEvent.target.geometry.getCoordinates();
+                onChangeLocation(point.id, newCoords);
+              }}
             />
           )
         }

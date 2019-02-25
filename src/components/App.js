@@ -52,20 +52,26 @@ class App extends React.Component {
       return null;
     }
 
-    const geocodeResult = await ymaps.geocode(searchValue);
-    const newPoint = {
-      id: 'id_' + nanoid(),
-      coords: geocodeResult.geoObjects.get(0).geometry.getCoordinates(),
-      caption: geocodeResult.geoObjects.get(0).properties.get('text'),
-      balloonContent: geocodeResult.geoObjects.get(0).properties.get('balloonContent'),
-    };
+    try {
+      const geocodeResponse = await ymaps.geocode(searchValue, { results: 1 });
+      const geocodedPoint = geocodeResponse.geoObjects.get(0);
+      const newPoint = {
+        id: 'id_' + nanoid(),
+        coords: geocodedPoint.geometry.getCoordinates(),
+        caption: geocodedPoint.properties.get('text'),
+        balloonContent: geocodedPoint.properties.get('balloonContent'),
+      };
+  
+      map.setCenter(newPoint.coords);
+  
+      this.setState({
+        searchValue: '',
+        points: [...points, newPoint],
+      });
+    } catch (err) {
+      console.log('SEARCH_ERROR: ', err);
+    }
 
-    map.setCenter(newPoint.coords);
-
-    this.setState({
-      searchValue: '',
-      points: [...points, newPoint],
-    });
   }
 
   handlePointRemove = (id) => {
@@ -84,28 +90,37 @@ class App extends React.Component {
     })
   }
 
-  handlePointChangeLocation = (id, coords) => {
+  handlePointChangeLocation = async (id, coords) => {
     const {
       points,
-      map,
+      ymaps,
     } = this.state;
 
-    const updatedPoints = points.reduce((acc, el) => {
-      if (el.id === id) {
-        const updatedPoint = {
-          ...el,
-          coords,
-        };
-        map.setCenter(updatedPoint.coords);
-        return [...acc, updatedPoint];
-      }
+    try {
+      const geocodeResponse = await ymaps.geocode(coords, { results: 1 });
+      const geocodedPoint = geocodeResponse.geoObjects.get(0);
+      const updatedPoints = points.reduce((acc, el) => {
+        if (el.id === id) {
+          const updatedPoint = {
+            ...el,
+            coords,
+            caption: geocodedPoint.getAddressLine(),
+            balloonContent: geocodedPoint.properties.get('balloonContent'),
+          };
+          return [...acc, updatedPoint];
+        }
+  
+        return [...acc, el];
+      }, []);
+  
+      this.setState({
+        points: updatedPoints,
+      });
+    } catch (err) {
+      console.log('CHANGE_LOCATION_ERROR: ', err);
+    }
 
-      return [...acc, el];
-    }, []);
 
-    this.setState({
-      points: updatedPoints,
-    });
   }
 
   render() {
