@@ -1,36 +1,24 @@
 import React from 'react';
+import PlaceItem from './PlaceItem';
 
-class PlacesList extends React.Component {
-  static defaultProps = {
-    points: [],
-  }
-
-  render() {
-    const { points, onRemove } = this.props;
-
-    if (!points.length) {
-      return null;
-    }
-
-    return (
-      <ul className='places'>
-        {points.map((el) =>
-          <li
-            className='places__item'
-            key={el.id}
-          >
-            {el.caption}
-            <button
-              className='places__item-remove'
-              onClick={() => onRemove(el.id)}
-            >
-              ✕
-            </button>
-          </li>
-        )}
-      </ul>
-    );
-  }
-}
+const PlacesList = ({
+  points = [],
+  onRemoveItem,
+  onDropItem,
+}) => (!points.length ?
+  null :
+  <ul className='places'>
+    {points.map((el, ind) =>
+      <PlaceItem
+        key={el.id}
+        id={el.id}
+        index={ind}
+        caption={el.caption}
+        onRemove={() => onRemoveItem(el.id)}
+        onDrop={onDropItem}
+      />
+    )}
+  </ul>
+);
 
 export default PlacesList;

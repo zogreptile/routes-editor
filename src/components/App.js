@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  YMaps,
-  Map,
-} from 'react-yandex-maps';
+import { Map } from 'react-yandex-maps';
 import nanoid from 'nanoid';
 import SearchBar from './SearchBar';
 import PlacesList from './PlacesList';
 import Route from './Route';
+import { mapState } from '../constants';
 import '../App.css';
-
-const mapState = {
-  center: [55.75, 37.57],
-  zoom: 14,
-};
-
-const mapConfig = {
-  load: 'geocode',
-  apikey: 'eeb0c9a9-72eb-497b-a566-b040ed89c6c1',
-};
 
 class App extends React.Component {
   state = {
@@ -74,7 +62,7 @@ class App extends React.Component {
 
   }
 
-  handlePointRemove = (id) => {
+  handleItemRemove = (id) => {
     const {
       points,
       map,
@@ -85,9 +73,19 @@ class App extends React.Component {
     //TODO: show all points
     newPoints.length && map.setCenter(newPoints[newPoints.length - 1].coords);
 
-    this.setState({
-      points: newPoints,
-    })
+    this.setState({ points: newPoints });
+  }
+
+  handleItemDrop = (dragIndex, dropIndex) => {
+    const { points } = this.state;
+
+    const newPoints = [...points];
+    const dragItem = newPoints[dragIndex];
+    const dropItem = newPoints[dropIndex];
+    newPoints[dragIndex] = dropItem;
+    newPoints[dropIndex] = dragItem;
+
+    this.setState({ points: newPoints });
   }
 
   handlePointChangeLocation = async (id, coords) => {
@@ -119,8 +117,6 @@ class App extends React.Component {
     } catch (err) {
       console.log('CHANGE_LOCATION_ERROR: ', err);
     }
-
-
   }
 
   render() {
@@ -130,9 +126,7 @@ class App extends React.Component {
     } = this.state;
 
     return (
-      <YMaps
-        query={mapConfig}
-      >
+      <>
         <SearchBar
           value={searchValue}
           onChange={this.handleSearchChange}
@@ -140,7 +134,8 @@ class App extends React.Component {
         />
         <PlacesList
           points={points}
-          onRemove={this.handlePointRemove}
+          onRemoveItem={this.handleItemRemove}
+          onDropItem={this.handleItemDrop}
         />
         <Map
           defaultState={mapState}
@@ -154,7 +149,7 @@ class App extends React.Component {
             onChangeLocation={this.handlePointChangeLocation}
           />
         </Map>
-      </YMaps>
+      </>
     );
   }
 };
