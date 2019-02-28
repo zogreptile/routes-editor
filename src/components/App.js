@@ -111,9 +111,7 @@ class App extends React.Component {
         return [...acc, el];
       }, []);
   
-      this.setState({
-        points: updatedPoints,
-      });
+      this.setState({ points: updatedPoints });
     } catch (err) {
       console.log('CHANGE_LOCATION_ERROR: ', err);
     }

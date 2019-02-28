@@ -4,7 +4,7 @@ import {
   Polyline,
 } from 'react-yandex-maps';
 
-class Route extends React.Component {
+class Route extends React.PureComponent {
   render() {
     const {
       points,

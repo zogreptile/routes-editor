@@ -1,18 +1,24 @@
 import React from 'react';
 
-class SearchBar extends React.Component {
+class SearchBar extends React.PureComponent {
   render() {
+    const {
+      value,
+      onChange,
+      onSubmit,
+    } = this.props;
+
     return (
       <form
         className='search-bar'
-        onSubmit={this.props.onSubmit}
+        onSubmit={onSubmit}
       >
         <input
           className='search-bar__input'
           type='text'
           placeholder='Введите адрес'
-          value={this.props.value}
-          onChange={this.props.onChange}
+          value={value}
+          onChange={onChange}
         />
       </form>
     );
