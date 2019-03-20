@@ -70,7 +70,6 @@ class App extends React.Component {
 
     const newPoints = points.filter(point => point.id !== id);
 
-    //TODO: show all points
     newPoints.length && map.setCenter(newPoints[newPoints.length - 1].coords);
 
     this.setState({ points: newPoints });

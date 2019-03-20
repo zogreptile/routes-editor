@@ -4,7 +4,7 @@ import PlaceItem from './PlaceItem';
 class PlacesList extends React.PureComponent {
   render() {
     const {
-      points = [],
+      points,
       onRemoveItem,
       onDropItem,
     } = this.props;
