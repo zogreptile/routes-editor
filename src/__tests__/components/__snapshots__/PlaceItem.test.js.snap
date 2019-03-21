@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlaceItem renders 1`] = `
+<li
+  className="places__item"
+  style={
+    Object {
+      "color": "inherit",
+      "opacity": 1,
+    }
+  }
+>
+  Test caption
+  <button
+    className="places__item-remove"
+  >
+    ✕
+  </button>
+</li>
+`;

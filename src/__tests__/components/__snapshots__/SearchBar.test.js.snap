@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchBar renders 1`] = `
+<form
+  className="search-bar"
+>
+  <input
+    className="search-bar__input"
+    placeholder="Введите адрес"
+    type="text"
+  />
+</form>
+`;

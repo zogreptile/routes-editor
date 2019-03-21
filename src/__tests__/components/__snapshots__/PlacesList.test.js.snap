@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlacesList renders 1`] = `
+<ul
+  className="places"
+>
+  <li
+    className="places__item"
+    style={
+      Object {
+        "color": "inherit",
+        "opacity": 1,
+      }
+    }
+  >
+    Россия, Хабаровск, улица Ленина, 15
+    <button
+      className="places__item-remove"
+      onClick={[Function]}
+    >
+      ✕
+    </button>
+  </li>
+  <li
+    className="places__item"
+    style={
+      Object {
+        "color": "inherit",
+        "opacity": 1,
+      }
+    }
+  >
+    Россия, Хабаровск, улица Пушкина, 15
+    <button
+      className="places__item-remove"
+      onClick={[Function]}
+    >
+      ✕
+    </button>
+  </li>
+</ul>
+`;

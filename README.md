@@ -10,6 +10,7 @@
 ### Команды
 - `yarn start` – запустить проект
 - `yarn build` – сборка проекта
+- `yarn test` – запуск тестов
 
 ### Демо
 [https://zogreptile.github.io/routes-editor/](https://zogreptile.github.io/routes-editor/)
